@@ -95,11 +95,12 @@ class Reporter(object):
       tests=self.data_source.get_test_results(config_name)
       for test in tests:
           test_time = 0
+          test_data=self.data_source.get_test_result(config_name, test.name)
           if test.func_end_time != None and test.func_start_time != None:
               test_time = test.func_end_time - test.func_start_time
           tc = TestCase(test.name,'',test_time, test.description, test.message)
           if 'failed' in test.result:
-              tc.add_failure_info(test.result)
+              tc.add_failure_info(test_data.exception)
           elif 'skipped' in test.result:
               tc.add_skipped_info(test.result)
           testcases.append(tc)
